@@ -1,7 +1,7 @@
 <?php
 namespace yearToArray;
 
-function toArray(array $years) {
+function toArrayTZ(array $years) {
   $parsed = [];
 
   foreach ($years as $key=>$year) {
