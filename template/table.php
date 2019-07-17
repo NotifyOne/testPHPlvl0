@@ -17,13 +17,18 @@
 </head>
 <body>
 
-<form action="verify.php" method="post">
+<form action="<?= 'verify.php' //$_SERVER['PHP_SELF'] ?>" method="post">
   <?php
-  if (isset($tables)) {
-    echo $tables;
+  if (isset($tablesRender)) {
+    if (is_array($tablesRender)) {
+      foreach ($tablesRender as $tablesRend) {
+        echo $tablesRend;
+      }
+    } else
+      echo $tablesRender;
   }
   ?>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Submit" name="Validate">
 </form>
 
 </body>
