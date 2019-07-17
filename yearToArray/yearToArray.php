@@ -1,6 +1,7 @@
 <?php
 namespace yearToArray;
 
+// Parse variables to array in technical task
 function toArrayTZ(array $years) {
   $parsed = [];
 
@@ -27,4 +28,17 @@ function toArrayTZ(array $years) {
   }
 
   return $return;
+}
+
+// Parse variavles from technical task to array[formID][year]
+function tzParseTableYear(array $array) {
+  $tables = [];
+  foreach ($array as $arr) {
+    foreach ($arr as $k=>$a) {
+      if ($k == 'Year' || $k == 'Form' )
+        continue;
+      $tables[$arr['Form']][$arr['Year']][$k] = $a;
+    }
+  }
+  return $tables;
 }
