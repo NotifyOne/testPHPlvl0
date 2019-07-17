@@ -21,8 +21,8 @@ class RenderTable {
     self::$countId++;
   }
 
-  public function addYear(int $year) {
-    $this->years[] = $year;
+  public function addYear(int $year, array $values = [NULL]) {
+    $this->years[] = [$year, $values];
   }
 
   private function printTab(int $i) {
@@ -49,8 +49,8 @@ class RenderTable {
     return $ret;
   }
 
-  private function getInputRender(int $year, string $mount) {
-    return "<input type='number' name='arr[{$this->id}-{$year}-{$mount}]' width='100px' />";
+  private function getInputRender(int $year, string $mount, string $value = '') {
+    return "<input type='number' name='arr[{$this->id}-{$year}-{$mount}]' width='100px' value='{$value}' />";
   }
 
   private function getTopTableRender() {
@@ -93,30 +93,30 @@ class RenderTable {
     foreach ($this->years as $year) {
       $rendered .= $this->printTab(1) . '<tr>' . PHP_EOL;
 
-      $rendered .= $this->getCellRender($year);
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Jan"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Feb"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Mar"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Q1"), 'colored');
+      $rendered .= $this->getCellRender($year[0]);
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Jan", ($year[1]['Jan'] ?? '') ));
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Feb"), ($year[1]['Feb'] ?? '') );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Mar"), ($year[1]['Mar'] ?? '') );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Q1", ($year[1]['Q1'] ?? '')), 'colored' );
 
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Apr"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "May"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Jun"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Q2"), 'colored');
-
-
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Jul"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Aug"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Sep"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Q3"), 'colored');
-
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Oct"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Nov"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Dec"));
-      $rendered .= $this->getCellRender($this->getInputRender($year, "Q4"), 'colored');
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Apr", ($year[1]['Apr'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "May", ($year[1]['May'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Jun", ($year[1]['Jun'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Q2", ($year[1]['Q2'] ?? '')), 'colored' );
 
 
-      $rendered .= $this->getCellRender($this->getInputRender($year, "YDT"), 'colored');
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Jul", ($year[1]['Jul'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Aug", ($year[1]['Aug'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Sep", ($year[1]['Sep'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Q3", ($year[1]['Q3'] ?? '')), 'colored' );
+
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Oct", ($year[1]['Oct'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Nov", ($year[1]['Nov'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Dec", ($year[1]['Dec'] ?? '')) );
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "Q4", ($year[1]['Q4'] ?? '')), 'colored' );
+
+
+      $rendered .= $this->getCellRender( $this->getInputRender($year[0], "YDT", ($year[1]['YDT'] ?? '')), 'colored' );
 
 
       $rendered .= $this->printTab(1) . '</tr>' . PHP_EOL;
@@ -126,12 +126,15 @@ class RenderTable {
   }
 
   function render() {
+    $this->rendered .= '<input type="submit" value="Add year" name="'. $this->id .'" formaction="index.php"/>';
+
     $this->rendered .= '<table border="1px" width="100%">' . PHP_EOL;
 
     $this->rendered .= $this->getTopTableRender();
     $this->rendered .= $this->getYearsRender();
 
     $this->rendered .= '</table>' . PHP_EOL;
+
 
     return $this->rendered;
   }
