@@ -10,6 +10,9 @@
     .colored {
       background-color: darkgray;
     }
+    input[type="number"] {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -20,6 +23,7 @@
     echo $tables;
   }
   ?>
+  <input type="submit" value="Submit">
 </form>
 
 </body>
