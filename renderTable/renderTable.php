@@ -121,7 +121,7 @@ class RenderTable {
   }
 
   function render() {
-    $this->rendered .= '<table border="1px">' . PHP_EOL;
+    $this->rendered .= '<table border="1px" width="100%">' . PHP_EOL;
 
     $this->rendered .= $this->getTopTableRender();
     $this->rendered .= $this->getYearsRender();
