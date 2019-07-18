@@ -28,6 +28,7 @@
       echo $tablesRender;
   }
   ?>
+  <input type="submit" value="Add table" name="AddTable" formaction="index.php">
   <input type="submit" value="Submit" name="Validate">
 </form>
 

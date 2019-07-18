@@ -23,8 +23,12 @@ if (isset($_POST['arr'])) {
       $tables[$key]->addYear($k, $t);
     }
   }
-
-  $tables[$addYear]->addPrevYear();
+  if (isset($addYear)) {
+    $tables[$addYear]->addPrevYear();
+  } elseif (isset($_POST['AddTable'])) {
+    $tables[] = new RenderTable();
+    $tables[count($tables) - 1]->addYear(date("Y"));
+  }
 
   foreach ($tables as $t) {
     $tablesRender[] = $t->render();
