@@ -4,7 +4,15 @@ require_once 'yearToArray/yearToArray.php';
 function validateTable($table, &$startPos = [], &$endPos = []) {
   $start = FALSE;
   $break = FALSE;
-  foreach ($table as $k=>$t) {
+  $oldYear = NULL;
+  foreach ($table as $k => $t) {
+    if ($oldYear == NULL) {
+      $oldYear = $k;
+    }
+    if (($k - $oldYear) > 1) {
+      return FALSE;
+    }
+
     foreach ($t as $key => $elem) {
       if (
         ('Q1' == $key)
@@ -17,12 +25,13 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
       }
       if ($elem != '') {
         if ($break) {
-          return false;
+          return FALSE;
         }
         $start = TRUE;
-          if (count($startPos) < 1)
-            $startPos = [$k , $key];
-        $endPos = [$k , $key];
+        if (count($startPos) < 1) {
+          $startPos = [$k, $key];
+        }
+        $endPos = [$k, $key];
       }
       else {
         if (!$start) {
@@ -35,7 +44,7 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
     }
 
   }
-  return true;
+  return TRUE;
 }
 
 function validateTables($tables) {
@@ -47,7 +56,7 @@ function validateTables($tables) {
     $validated[] = [
       validateTable($arr, $startPos, $endPos),
       $startPos,
-      $endPos
+      $endPos,
     ];
 
   }
@@ -56,15 +65,24 @@ function validateTables($tables) {
   $endPos = [];
   foreach ($validated as $value) {
     if (!$value[0]) {
-      return false;
+      return FALSE;
     }
-    if (count($startPos) < 1)
+    if (count($startPos) < 1) {
       $startPos = $value[1];
-    if (count($endPos) < 1)
+    }
+    if (count($endPos) < 1) {
       $endPos = $value[2];
+    }
+
+    if (!isset(
+      $value[1][0], $value[1][1],
+      $value[2][0], $value[2][1])
+    ) {
+      return FALSE;
+    }
 
     if (
-         ($startPos[0] != $value[1][0])
+      ($startPos[0] != $value[1][0])
       || ($startPos[1] != $value[1][1])
       || ($endPos[0] != $value[2][0])
       || ($endPos[1] != $value[2][1])
@@ -72,14 +90,13 @@ function validateTables($tables) {
       return FALSE;
     }
   }
-  return true;
+  return TRUE;
 
 }
 
 
-
 if (isset($_POST['arr'])) {
 
-  echo validateTables($_POST['arr']) ? 'true' : 'false';
+  echo validateTables($_POST['arr']) ? 'Valid' : 'Invalid';
 
 }
