@@ -1,6 +1,5 @@
 <?php
 require_once 'renderTable/renderTable.php';
-//require_once 'verify.php';
 
 $addYear = null;
 
@@ -42,18 +41,4 @@ if (isset($_POST['arr'])) {
 }
 
 
-//$table = new RenderTable();
-//$table->addYear(2018);
-//$table->addYear(2019);
-//
-//$tables[] =  $table->render();
-//
-//$table = new RenderTable();
-//$table->addYear(2019);
-//$tables[] = $table->render();
-
 require_once 'template/table.php';
-
-//echo '<pre>';
-//var_dump($_POST);
-//var_dump(yearToArray\tzParseTableYear(yearToArray\toArrayTZ($_POST['arr'])));

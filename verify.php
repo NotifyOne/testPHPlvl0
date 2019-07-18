@@ -33,7 +33,6 @@ function validate($arrayToValidate) {
 }
 
 if (isset($_POST['arr'])) {
-//  $tables = yearToArray\tzParseTableYear(yearToArray\toArrayTZ($_POST['arr']));
 
   echo validate($_POST['arr']);
 }
