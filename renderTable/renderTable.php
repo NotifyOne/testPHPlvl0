@@ -25,18 +25,9 @@ class RenderTable {
     $this->years[$year] = $values;
   }
   public function addPrevYear() {
-    $minYear = date("Y");
-    foreach ($this->years as $y => $k) {
-      if ($y < $minYear)
-        $minYear = $y;
-    }
-
-    $oldyears = $this->years;
-    $this->years = [];
-    $this->years[$minYear - 1] = [''];
-    foreach ($oldyears as $k=>$y) {
-      $this->years[$k] = $y;
-    }
+   $tmp = $this->years;
+   $this->years = null;
+   $this->years = [ (min(array_keys($tmp)) - 1) => []] + $tmp;
   }
 
   private function printTab(int $i) {
