@@ -5,11 +5,15 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
   $start = FALSE;
   $break = FALSE;
   $oldYear = NULL;
+  $prevYear=  NULL;
   foreach ($table as $k => $t) {
-    if ($oldYear == NULL) {
-      $oldYear = $k;
+    if ($prevYear == NULL) {
+      $prevYear = $k;
     }
-    if (($k - $oldYear) < -1) {
+    $oldYear = $prevYear;
+    $prevYear = $k;
+
+    if ( (($k - $oldYear) > 1) ) {
       return FALSE;
     }
 
