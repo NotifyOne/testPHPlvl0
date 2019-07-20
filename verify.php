@@ -9,7 +9,7 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
     if ($oldYear == NULL) {
       $oldYear = $k;
     }
-    if (($k - $oldYear) > 1) {
+    if (($k - $oldYear) < -1) {
       return FALSE;
     }
 
@@ -48,6 +48,12 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
 }
 
 function validateTables($tables) {
+  // Sort array if no sorted
+  foreach ($tables as &$form) {
+    ksort($form);
+  }
+  unset($form);
+
   $validated = [];
   foreach ($tables as $arr) {
     $startPos = [];
@@ -93,7 +99,6 @@ function validateTables($tables) {
   return TRUE;
 
 }
-
 
 if (isset($_POST['arr'])) {
 
