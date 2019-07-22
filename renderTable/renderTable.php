@@ -22,7 +22,7 @@ class RenderTable {
    * @var int
    *  Contains count tables
    */
-  static $countId = 0;
+  private static $countId = 0;
 
   /**
    * @var int
