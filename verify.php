@@ -80,6 +80,9 @@ function validateTables(array $tables) {
 
   $startPos = [];
   $endPos = [];
+
+  $emptyPos = false;
+
   // Check if tables validated and start position and end position equals
   foreach ($validated as $value) {
     if (!$value[0]) {
@@ -87,17 +90,28 @@ function validateTables(array $tables) {
     }
     if (count($startPos) < 1) {
       $startPos = $value[1];
+      if (!isset($value[1][0], $value[1][1]))
+        $emptyPos = true;
     }
     if (count($endPos) < 1) {
       $endPos = $value[2];
+      if (!isset($value[2][0], $value[2][1]))
+        $emptyPos = true;
     }
 
-    if (!isset(
-      $value[1][0], $value[1][1],
-      $value[2][0], $value[2][1])
-    ) {
+    if (
+      (!isset(
+          $startPos[0], $startPos[1],
+          $endPos[0], $endPos[1]
+        ) || $emptyPos) != !isset(
+        $value[1][0], $value[1][1],
+        $value[2][0], $value[2][1]
+      ) ) {
       return FALSE;
     }
+
+    if ($emptyPos)
+      continue;
 
     if (
       ($startPos[0] != $value[1][0])
