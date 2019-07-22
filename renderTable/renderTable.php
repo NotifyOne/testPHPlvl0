@@ -201,7 +201,7 @@ class RenderTable {
    *  Formatted html table with years, mounts.
    */
   function render() {
-    $this->rendered .= '<input type="submit" value="Add year" name="'. $this->id .'" formaction="index.php"/>';
+    $this->rendered .= '<input type="submit" value="Add year" name="'. $this->id .'" />';
 
     $this->rendered .= '<table>' . PHP_EOL;
 

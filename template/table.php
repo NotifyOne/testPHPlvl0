@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<form action="<?= 'verify.php' //$_SERVER['PHP_SELF'] ?>" method="post">
+<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
   <?php
   if (isset($tablesRender)) {
     if (is_array($tablesRender)) {
@@ -35,8 +35,8 @@
       echo $tablesRender;
   }
   ?>
-  <input type="submit" value="Add table" name="AddTable" formaction="index.php">
-  <input type="submit" value="Submit" name="Validate">
+  <input type="submit" value="Add table" name="AddTable">
+  <input type="submit" value="Submit" name="Validate" formaction="verify.php">
 </form>
 
 </body>
