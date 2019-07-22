@@ -6,7 +6,7 @@ function validateTable(array $table, &$startPos = [], &$endPos = []) {
   $start = FALSE;
   $break = FALSE;
   $oldYear = NULL;
-  $prevYear=  NULL;
+  $prevYear = NULL;
   foreach ($table as $k => $t) {
     if ($prevYear == NULL) {
       $prevYear = $k;
@@ -16,7 +16,7 @@ function validateTable(array $table, &$startPos = [], &$endPos = []) {
 
     // if the difference between the beginning and next year is greater 1
     // -> The gap in years. Table is invalid
-    if ( (($k - $oldYear) > 1) ) {
+    if ((($k - $oldYear) > 1)) {
       return FALSE;
     }
 
@@ -42,7 +42,8 @@ function validateTable(array $table, &$startPos = [], &$endPos = []) {
           $startPos = [$k, $key];
         }
         $endPos = [$k, $key];
-      } else {
+      }
+      else {
         if (!$start) {
           $start = FALSE;
         }
@@ -81,7 +82,7 @@ function validateTables(array $tables) {
   $startPos = [];
   $endPos = [];
 
-  $emptyPos = false;
+  $emptyPos = FALSE;
 
   // Check if tables validated and start position and end position equals
   foreach ($validated as $value) {
@@ -90,13 +91,15 @@ function validateTables(array $tables) {
     }
     if (count($startPos) < 1) {
       $startPos = $value[1];
-      if (!isset($value[1][0], $value[1][1]))
-        $emptyPos = true;
+      if (!isset($value[1][0], $value[1][1])) {
+        $emptyPos = TRUE;
+      }
     }
     if (count($endPos) < 1) {
       $endPos = $value[2];
-      if (!isset($value[2][0], $value[2][1]))
-        $emptyPos = true;
+      if (!isset($value[2][0], $value[2][1])) {
+        $emptyPos = TRUE;
+      }
     }
 
     if (
@@ -106,19 +109,16 @@ function validateTables(array $tables) {
         ) || $emptyPos) != !isset(
         $value[1][0], $value[1][1],
         $value[2][0], $value[2][1]
-      ) ) {
+      )) {
       return FALSE;
     }
 
-    if ($emptyPos)
-      continue;
-
-    if (
-      ($startPos[0] != $value[1][0])
-      || ($startPos[1] != $value[1][1])
-      || ($endPos[0] != $value[2][0])
-      || ($endPos[1] != $value[2][1])
-    ) {
+    if ($emptyPos || (
+        ($startPos[0] != $value[1][0])
+        || ($startPos[1] != $value[1][1])
+        || ($endPos[0] != $value[2][0])
+        || ($endPos[1] != $value[2][1])
+      )) {
       return FALSE;
     }
   }
