@@ -1,7 +1,8 @@
 <?php
 require_once 'yearToArray/yearToArray.php';
 
-function validateTable($table, &$startPos = [], &$endPos = []) {
+// Validate one table [year1 => array_mounts,]
+function validateTable(array $table, &$startPos = [], &$endPos = []) {
   $start = FALSE;
   $break = FALSE;
   $oldYear = NULL;
@@ -13,11 +14,15 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
     $oldYear = $prevYear;
     $prevYear = $k;
 
+    // if the difference between the beginning and next year is greater 1
+    // -> The gap in years. Table is invalid
     if ( (($k - $oldYear) > 1) ) {
       return FALSE;
     }
 
+    // Check for continuity
     foreach ($t as $key => $elem) {
+      // Some keys should not be checked
       if (
         ('Q1' == $key)
         || ('Q2' == $key)
@@ -27,6 +32,7 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
       ) {
         continue;
       }
+
       if ($elem != '') {
         if ($break) {
           return FALSE;
@@ -36,8 +42,7 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
           $startPos = [$k, $key];
         }
         $endPos = [$k, $key];
-      }
-      else {
+      } else {
         if (!$start) {
           $start = FALSE;
         }
@@ -45,13 +50,14 @@ function validateTable($table, &$startPos = [], &$endPos = []) {
           $break = TRUE;
         }
       }
-    }
 
+    }
   }
   return TRUE;
 }
 
-function validateTables($tables) {
+// Validate all tables. Accepts array tables [tableId => [year1 => array_mounts],]
+function validateTables(array $tables) {
   // Sort array if no sorted
   foreach ($tables as &$form) {
     ksort($form);
@@ -59,6 +65,7 @@ function validateTables($tables) {
   unset($form);
 
   $validated = [];
+  // $validated => array if validated table, start position, end position
   foreach ($tables as $arr) {
     $startPos = [];
     $endPos = [];
@@ -73,6 +80,7 @@ function validateTables($tables) {
 
   $startPos = [];
   $endPos = [];
+  // Check if tables validated and start position and end position equals
   foreach ($validated as $value) {
     if (!$value[0]) {
       return FALSE;
@@ -100,6 +108,7 @@ function validateTables($tables) {
       return FALSE;
     }
   }
+
   return TRUE;
 
 }
