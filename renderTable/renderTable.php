@@ -203,7 +203,7 @@ class RenderTable {
   function render() {
     $this->rendered .= '<input type="submit" value="Add year" name="'. $this->id .'" formaction="index.php"/>';
 
-    $this->rendered .= '<table border="1px" width="100%">' . PHP_EOL;
+    $this->rendered .= '<table>' . PHP_EOL;
 
     $this->rendered .= $this->getTopTableRender();
     $this->rendered .= $this->getYearsRender();

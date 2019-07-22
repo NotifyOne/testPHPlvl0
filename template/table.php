@@ -13,6 +13,13 @@
     input[type="number"] {
       width: 100%;
     }
+    table {
+      width: 100%;
+      border: 1px solid black;
+    }
+    tr, td, th {
+      border: 1px solid black;
+    }
   </style>
 </head>
 <body>
