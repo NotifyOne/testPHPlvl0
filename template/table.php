@@ -27,12 +27,9 @@
 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
   <?php
   if (isset($tablesRender)) {
-    if (is_array($tablesRender)) {
-      foreach ($tablesRender as $tablesRend) {
-        echo $tablesRend;
-      }
-    } else
-      echo $tablesRender;
+    foreach ($tablesRender as $tablesRend) {
+      echo $tablesRend;
+    }
   }
   ?>
   <input type="submit" value="Add table" name="AddTable">
