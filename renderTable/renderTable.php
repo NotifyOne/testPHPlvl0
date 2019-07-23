@@ -113,7 +113,7 @@ class RenderTable {
    *  Formatted html block with input
    */
   private function getInputRender(int $year, string $mount, string $value = '') {
-    return "<input type='number' name='arr[{$this->id}][{$year}][{$mount}]' width='100px' value='{$value}' />";
+    return "<input type='number' step='any' name='arr[{$this->id}][{$year}][{$mount}]' width='100px' value='{$value}' />";
   }
 
   /**
