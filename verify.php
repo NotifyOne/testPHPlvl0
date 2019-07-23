@@ -113,12 +113,16 @@ function validateTables(array $tables) {
       return FALSE;
     }
 
-    if ($emptyPos || (
+    if ($emptyPos) {
+      continue;
+    }
+
+    if (
         ($startPos[0] != $value[1][0])
         || ($startPos[1] != $value[1][1])
         || ($endPos[0] != $value[2][0])
         || ($endPos[1] != $value[2][1])
-      )) {
+      ) {
       return FALSE;
     }
   }
