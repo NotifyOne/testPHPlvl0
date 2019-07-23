@@ -1,6 +1,54 @@
 <?php
 require_once 'yearToArray/yearToArray.php';
 
+function getQuartalsCorrected(float $mount1 = 0.0, float $mount2 = 0.0, float $mount3 = 0.0) {
+  $mountSum = ($mount1 + $mount2 + $mount3 + 1);
+//  echo $mountSum;
+  return $mountSum != 1 ? round( ( $mountSum / 3 ), 2 ) : 0;
+}
+
+function getYearCorrected(array $quartals) {
+  $sum = 0.0;
+  foreach ($quartals as $quartal) {
+    $sum += $quartal;
+  }
+  $sum += 1;
+  return $sum != 1 ? ($sum / 4) : 0;
+}
+
+function validateValues(array $table) {
+  $Q[] = getQuartalsCorrected(
+    floatval($table['Jan'] ?? 0),
+    floatval($table['Feb'] ?? 0),
+    floatval($table['Mar'] ?? 0));
+  $Q[] = getQuartalsCorrected(
+    floatval($table['Apr'] ?? 0),
+    floatval($table['May'] ?? 0),
+    floatval($table['Jun'] ?? 0));
+  $Q[] = getQuartalsCorrected(
+    floatval($table['Jul'] ?? 0),
+    floatval($table['Aug'] ?? 0),
+    floatval($table['Sep'] ?? 0));
+  $Q[] = getQuartalsCorrected(
+    floatval($table['Oct'] ?? 0),
+    floatval($table['Nov'] ?? 0),
+    floatval($table['Dec'] ?? 0));
+
+  foreach ($Q as $k => $item) {
+    if ( abs($item - floatval($table['Q' . ($k + 1)] ?? 0)) > 0.05 ) {
+      return false;
+    }
+  }
+
+  $yearDT = getYearCorrected($Q);
+
+  if ( abs($yearDT - floatval($table['YDT'] ?? 0)) > 0.05 ) {
+    return false;
+  }
+
+  return true;
+}
+
 // Validate one table [year1 => array_mounts,]
 function validateTable(array $table, &$startPos = [], &$endPos = []) {
   $start = FALSE;
@@ -52,6 +100,10 @@ function validateTable(array $table, &$startPos = [], &$endPos = []) {
         }
       }
 
+    }
+    // End Check for continuity
+    if (!validateValues($t)) {
+      return false;
     }
   }
   return TRUE;
@@ -125,6 +177,10 @@ function validateTables(array $tables) {
       ) {
       return FALSE;
     }
+  }
+
+  foreach ($tables as $table) {
+    validateValues($table);
   }
 
   return TRUE;
