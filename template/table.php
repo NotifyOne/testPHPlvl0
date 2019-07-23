@@ -7,9 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>HTML test level 0</title>
   <style>
-    .colored {
-      background-color: darkgray;
-    }
     input[type="number"] {
       width: 100%;
     }
@@ -19,6 +16,9 @@
     }
     tr, td, th {
       border: 1px solid black;
+    }
+    th:nth-child(4n + 5), td:nth-child(4n+5), th:last-child, td:last-child {
+      background-color: darkgray;
     }
   </style>
 </head>
