@@ -3,8 +3,8 @@ require_once 'yearToArray/yearToArray.php';
 
 function getQuartalsCorrected(float $mount1 = 0.0, float $mount2 = 0.0, float $mount3 = 0.0) {
   $mountSum = ($mount1 + $mount2 + $mount3 + 1);
-//  echo $mountSum;
-  return $mountSum != 1 ? round( ( $mountSum / 3 ), 2 ) : 0;
+  //  echo $mountSum;
+  return $mountSum != 1 ? round(($mountSum / 3), 2) : 0;
 }
 
 function getYearCorrected(array $quartals) {
@@ -35,18 +35,18 @@ function validateValues(array $table) {
     floatval($table['Dec'] ?? 0));
 
   foreach ($Q as $k => $item) {
-    if ( abs($item - floatval($table['Q' . ($k + 1)] ?? 0)) > 0.05 ) {
-      return false;
+    if (abs($item - floatval($table['Q' . ($k + 1)] ?? 0)) > 0.05) {
+      return FALSE;
     }
   }
 
   $yearDT = getYearCorrected($Q);
 
-  if ( abs($yearDT - floatval($table['YDT'] ?? 0)) > 0.05 ) {
-    return false;
+  if (abs($yearDT - floatval($table['YDT'] ?? 0)) > 0.05) {
+    return FALSE;
   }
 
-  return true;
+  return TRUE;
 }
 
 // Validate one table [year1 => array_mounts,]
@@ -103,10 +103,67 @@ function validateTable(array $table, &$startPos = [], &$endPos = []) {
     }
     // End Check for continuity
     if (!validateValues($t)) {
-      return false;
+      return FALSE;
     }
   }
   return TRUE;
+}
+
+// array $position =
+//  [tableID => [
+//    startPosition(0) =>
+//      [Year, mounts],
+//    endPosition(1) =>
+//      [Year, mounts]
+//    ], TableID2 =>...
+//  ]
+function checkEqualsPosition(array $positions) {
+  $startPos = [];
+  $endPos = [];
+
+  $emptyPos = FALSE;
+
+  // Check if start position and end position equals
+  foreach ($positions as $value) {
+
+    if (count($startPos) < 1) {
+      $startPos = $value[0];
+      if (!isset($value[0][0], $value[0][1])) {
+        $emptyPos = TRUE;
+      }
+    }
+    if (count($endPos) < 1) {
+      $endPos = $value[1];
+      if (!isset($value[1][0], $value[1][1])) {
+        $emptyPos = TRUE;
+      }
+    }
+
+    if (
+      (!isset(
+          $startPos[0], $startPos[1],
+          $endPos[0], $endPos[1]
+        ) || $emptyPos) != !isset(
+        $value[0][0], $value[0][1],
+        $value[1][0], $value[1][1]
+      )) {
+      return FALSE;
+    }
+
+    if ($emptyPos) {
+      continue;
+    }
+
+    if (
+      ($startPos[0] != $value[0][0])
+      || ($startPos[1] != $value[0][1])
+      || ($endPos[0] != $value[1][0])
+      || ($endPos[1] != $value[1][1])
+    ) {
+      return FALSE;
+    }
+  }
+  return true;
 }
 
 // Validate all tables. Accepts array tables [tableId => [year1 => array_mounts],]
@@ -117,67 +174,28 @@ function validateTables(array $tables) {
   }
   unset($form);
 
+  // $validated => array start position(0), end position(0)
   $validated = [];
-  // $validated => array if validated table, start position, end position
+
   foreach ($tables as $arr) {
     $startPos = [];
     $endPos = [];
 
+    if (!validateTable($arr, $startPos, $endPos)) {
+      return FALSE;
+    }
+
     $validated[] = [
-      validateTable($arr, $startPos, $endPos),
       $startPos,
       $endPos,
     ];
 
   }
 
-  $startPos = [];
-  $endPos = [];
-
-  $emptyPos = FALSE;
-
-  // Check if tables validated and start position and end position equals
-  foreach ($validated as $value) {
-    if (!$value[0]) {
-      return FALSE;
-    }
-    if (count($startPos) < 1) {
-      $startPos = $value[1];
-      if (!isset($value[1][0], $value[1][1])) {
-        $emptyPos = TRUE;
-      }
-    }
-    if (count($endPos) < 1) {
-      $endPos = $value[2];
-      if (!isset($value[2][0], $value[2][1])) {
-        $emptyPos = TRUE;
-      }
-    }
-
-    if (
-      (!isset(
-          $startPos[0], $startPos[1],
-          $endPos[0], $endPos[1]
-        ) || $emptyPos) != !isset(
-        $value[1][0], $value[1][1],
-        $value[2][0], $value[2][1]
-      )) {
-      return FALSE;
-    }
-
-    if ($emptyPos) {
-      continue;
-    }
-
-    if (
-        ($startPos[0] != $value[1][0])
-        || ($startPos[1] != $value[1][1])
-        || ($endPos[0] != $value[2][0])
-        || ($endPos[1] != $value[2][1])
-      ) {
-      return FALSE;
-    }
+  if (!checkEqualsPosition($validated)) {
+    return FALSE;
   }
+  unset($validated);
 
   foreach ($tables as $table) {
     validateValues($table);
