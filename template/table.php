@@ -35,6 +35,6 @@
   <input type="submit" value="Add table" name="AddTable">
   <input type="submit" value="Submit" name="Validate" formaction="verify.php">
 </form>
-
+  <script src="/js.js"></script>
 </body>
 </html>
