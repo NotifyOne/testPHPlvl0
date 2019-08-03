@@ -25,9 +25,9 @@ function f() {
                         - -trc[h - 2].getElementsByTagName('input')[0].value
                         - -trc[h - 1].getElementsByTagName('input')[0].value);
                     if (value == 0) {
-                        input.value = 0;
+                        // input.value = 0;
                     } else {
-                        input.value = (value + 1) / 3;
+                        input.value = ((value + 1) / 3).toFixed(2);
                     }
                 } else if (h == 17) {
                     value = (
@@ -36,9 +36,9 @@ function f() {
                         - -trc[12].getElementsByTagName('input')[0].value
                         - -trc[16].getElementsByTagName('input')[0].value);
                     if (value == 0) {
-                        input.value = 0;
+                        // input.value = 0;
                     } else {
-                        input.value = (value + 1) / 4;
+                        input.value = ((value + 1) / 4).toFixed(2);
                     }
                 }
             }
