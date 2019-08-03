@@ -1,5 +1,12 @@
 for (i = 0; i < document.getElementsByTagName("table").length; i++) {
-    document.getElementsByTagName("table")[i].addEventListener("change", f);
+    for (j = 1; j < document.getElementsByTagName("table")[i].rows.length; j++) {
+        for (h = 1; h < document.getElementsByTagName("table")[i].rows[j].cells.length; h++) {
+            if ( ((h == 4) || (h == 8) || (h == 12) || (h == 16) || (h == 17)) ) {
+                continue;
+            }
+            document.getElementsByTagName("table")[i].rows[j].cells[h].addEventListener("change", f);
+        }
+    }
 }
 
 function f() {
